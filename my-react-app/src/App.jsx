@@ -1,52 +1,131 @@
 // import { useState } from "react";
-
+import React, { Fragment } from "react";
 import "./App.css";
-import React from "react";
 
-// const pizzaData = [
-//   {
-//     name: "Focaccia",
-//     ingredients: "Bread with italian olive oil and rosemary",
-//     price: 6,
-//     photoName: "pizzas/focaccia.jpg",
-//     soldOut: false,
-//   },
-//   {
-//     name: "Pizza Margherita",
-//     ingredients: "Tomato and mozarella",
-//     price: 10,
-//     photoName: "pizzas/margherita.jpg",
-//     soldOut: false,
-//   },
-//   {
-//     name: "Pizza Spinaci",
-//     ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
-//     price: 12,
-//     photoName: "pizzas/spinaci.jpg",
-//     soldOut: false,
-//   },
-//   {
-//     name: "Pizza Funghi",
-//     ingredients: "Tomato, mozarella, mushrooms, and onion",
-//     price: 12,
-//     photoName: "pizzas/funghi.jpg",
-//     soldOut: false,
-//   },
-//   {
-//     name: "Pizza Salamino",
-//     ingredients: "Tomato, mozarella, and pepperoni",
-//     price: 15,
-//     photoName: "pizzas/salamino.jpg",
-//     soldOut: true,
-//   },
-//   {
-//     name: "Pizza Prosciutto",
-//     ingredients: "Tomato, mozarella, ham, aragula, and burrata cheese",
-//     price: 18,
-//     photoName: "pizzas/prosciutto.jpg",
-//     soldOut: false,
-//   },
-// ];
+const pizzaData = [
+  {
+    name: "Focaccia",
+    ingredients: "Bread with italian olive oil and rosemary",
+    price: 6,
+    photoName: "pizzas/focaccia.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Margherita",
+    ingredients: "Tomato and mozarella",
+    price: 10,
+    photoName: "pizzas/margherita.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Spinaci",
+    ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
+    price: 12,
+    photoName: "pizzas/spinaci.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Funghi",
+    ingredients: "Tomato, mozarella, mushrooms, and onion",
+    price: 12,
+    photoName: "pizzas/funghi.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Salamino",
+    ingredients: "Tomato, mozarella, and pepperoni",
+    price: 15,
+    photoName: "pizzas/salamino.jpg",
+    soldOut: true,
+  },
+  {
+    name: "Pizza Prosciutto",
+    ingredients: "Tomato, mozarella, ham, aragula, and burrata cheese",
+    price: 18,
+    photoName: "pizzas/prosciutto.jpg",
+    soldOut: false,
+  },
+];
+
+const Header = () => {
+  const style = {};
+  return (
+    <header className="header">
+      <h1 style={style}> Fast React Pizza Co. </h1>
+    </header>
+  );
+};
+
+const Pizza = ({ item }) => {
+  // if (item.soldOut) return null;
+  return (
+    <li className={`pizza ${item.soldOut ? "sold-out" : ""}`}>
+      <img src={item.photoName} alt={item.name}></img>
+      <div>
+        <h3>{item.name}</h3>
+        <p>{item.ingredients}</p>
+        <span>{item.soldOut ? "Sold Out" : item.price} </span>
+      </div>
+    </li>
+  );
+};
+
+const Menu = () => {
+  const pizzas = pizzaData;
+  const pizzaNum = pizzas.length;
+
+  return (
+    <main className="menu">
+      <h2>Our Menu</h2>
+
+      {pizzaNum > 0 ? (
+        <Fragment>
+          <p>
+            authentic italian pizza cuisine with 6 delicious recipes for you to
+            experience
+          </p>
+          <ul className="pizzas">
+            {pizzaData.map((item, index) => (
+              <Pizza item={item} key={index} />
+            ))}
+          </ul>
+        </Fragment>
+      ) : (
+        <p>we are currently closed for maintenance please visit again later</p>
+      )}
+    </main>
+  );
+};
+
+function Order(props) {
+  return (
+    <div className="order">
+      <p>
+        {new Date().toLocaleTimeString()}. We are Open until {props.closeHour}{" "}
+        come visit us !
+      </p>
+      <button className="btn">Order</button>
+    </div>
+  );
+}
+
+const Footer = () => {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
+  return (
+    <footer className="footer">
+      {isOpen ? (
+        <Order closeHour={closeHour} />
+      ) : (
+        <p>
+          we are closed please visit us again between {openHour} and {closeHour}
+        </p>
+      )}
+    </footer>
+  );
+};
 
 function App() {
   return (
@@ -57,88 +136,4 @@ function App() {
     </div>
   );
 }
-
-function Header() {
-  const style = {};
-  return (
-    <header className="header">
-      <h1 style={style}> Fast React Pizza Co. </h1>
-    </header>
-  );
-}
-function Menu() {
-  return (
-    <main className="menu">
-      <h2>Our Menu</h2>
-      <div className="pizzas">
-        <Pizza
-          name="pizza Spinaci"
-          ingredients="Tomato, mozarella, spinach, and riccota cheese"
-          photoName="pizzas/spinaci.jpg"
-          price={10}
-        />
-        <Pizza
-          name="pizza Funghi"
-          ingredients="Tomato, mushrooms, and mozzarella cheese"
-          photoName="pizzas/funghi.jpg"
-          price={12}
-        />
-        <Pizza
-          name="pizza Margherita"
-          ingredients="Tomato, and margherita cheese"
-          photoName="pizzas/margherita.jpg"
-          price={8}
-        />
-        <Pizza
-          name="pizza prosciutto"
-          ingredients="Tomato, prosciutto, and margherita cheese"
-          photoName="pizzas/prosciutto.jpg"
-          price={11}
-        />
-        <Pizza
-          name="pizza Salamino"
-          ingredients="Tomato, salamino, and margherita cheese"
-          photoName="pizzas/salamino.jpg"
-          price={12}
-        />
-        <Pizza
-          name="pizza Focaccia"
-          ingredients="Tomato, focaccia, and margherita cheese"
-          photoName="pizzas/focaccia.jpg"
-          price={6}
-        />
-      </div>
-    </main>
-  );
-}
-
-function Pizza(props) {
-  console.log(props);
-
-  return (
-    <div className="pizza">
-      <img src={props.photoName} alt={props.name}></img>
-      <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingredients}</p>
-        <span>{props.price + 3}</span>
-      </div>
-    </div>
-  );
-}
-
-function Footer() {
-  // const hour = new Date().getHours();
-  // const openHour = 12;
-  // const closeHour = 22;
-  // if (hour >= openHour && hour <= closeHour) {
-  //   alert("We are currently Open");
-  // } else alert("We are currently Closed");
-  return (
-    <footer className="footer">
-      {new Date().toLocaleTimeString()}. We are Currently Open
-    </footer>
-  );
-}
-
 export default App;
